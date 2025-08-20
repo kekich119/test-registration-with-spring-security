@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Вход в систему</title>
+  <style>
+    body {
+      background: #f5f7fa;
+      font-family: Arial, sans-serif;
+    }
+    .login-container {
+      max-width: 350px;
+      margin: 80px auto;
+      background: #fff;
+      padding: 32px 28px 24px 28px;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(25, 118, 210, 0.10);
+    }
+    h2 {
+      text-align: center;
+      color: #1976d2;
+      margin-bottom: 28px;
+    }
+    label {
+      display: block;
+      margin-bottom: 16px;
+      color: #333;
+      font-size: 15px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-top: 6px;
+      border: 1px solid #bdbdbd;
+      border-radius: 6px;
+      font-size: 15px;
+      box-sizing: border-box;
+      transition: border 0.2s;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+      border: 1.5px solid #1976d2;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+    #result {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 15px;
+      color: #d32f2f;
+    }
+  </style>
+</head>
+<body>
+<div class="login-container">
+  <h2>Вход</h2>
+  <form id="loginForm">
+    <label>
+      Логин:
+      <input type="text" id="login" required>
+    </label>
+    <label>
+      Пароль:
+      <input type="password" id="password" required>
+    </label>
+    <button type="submit">Войти</button>
+  </form>
+  <div id="result"></div>
+</div>
+<script>
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const login = document.getElementById('login').value;
+    const password = document.getElementById('password').value;
+
+    const response = await fetch('http://localhost:8080/main/loginUser', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ login, password })
+    });
+
+    const resultDiv = document.getElementById('result');
+    if (response.ok) {
+      resultDiv.style.color = '#388e3c';
+      resultDiv.textContent = 'Вход выполнен успешно!';
+       window.location.href = '/main/profile'; // раскомментируй для перехода после входа
+    } else {
+      const error = await response.text();
+      resultDiv.style.color = '#d32f2f';
+      resultDiv.textContent = 'Ошибка: ' + error;
+    }
+  });
+</script>
+</body>
+</html>

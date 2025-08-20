@@ -1,0 +1,13 @@
+
+version: "1"
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5454:5432"
+    environment:
+      - POSTGRES_DB=users_db
+      - POSTGRES_USER=kekich
+      - POSTGRES_PASSWORD=12345
+    restart: always
